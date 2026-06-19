@@ -1,7 +1,10 @@
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
+import { installObservability } from './config/observability';
 
 async function run() {
+  // Optional: Install the SDK's built-in telemetry and logging.
+  installObservability();
   // Step 1: Establish a connection with Temporal server.
   //
   // Worker code uses `@temporalio/worker.NativeConnection`.
