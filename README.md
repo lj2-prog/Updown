@@ -121,12 +121,12 @@ This setup enables visibility into:
 
 ### Observability
 
-* [ ] Prometheus Integration
-* [ ] Grafana Dashboards
+* [x] Prometheus Integration
+* [x] Grafana Dashboards
 * [ ] Temporal Metrics
 * [ ] Structured Logging
 * [ ] Tracing
-* [ ] Performance Monitoring
+* [x] Performance Monitoring
 
 ### Production Readiness
 
