@@ -6,7 +6,7 @@ export function installObservability(): void {
     telemetryOptions: {
       metrics: {
         prometheus: {
-          bindAddress: `0.0.0.0:${env.METRICS_PORT}`,
+          bindAddress: `0.0.0.0:${env.TEMPORAL_METRICS_PORT}`,
         },
       },
       logging: {

@@ -1,0 +1,68 @@
+{
+  "uid": "temporal-workflows-local",
+  "title": "Temporal Workflows - Local",
+  "tags": ["temporal", "workflows", "local"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Total workflow starts",
+      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 4 },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (workflow_type, task_queue) (workflow_started_total)",
+          "legendFormat": "{{workflow_type}} / {{task_queue}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+    "id": 2,
+    "type": "timeseries",
+    "title": "Average workflow start gap",
+    "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+    "datasource": "Prometheus",
+    "targets": [
+        {
+        "refId": "A",
+        "expr": "sum by (workflow_type, task_queue) (workflow_start_gap_seconds_sum) / sum by (workflow_type, task_queue) (workflow_start_gap_seconds_count)",
+        "legendFormat": "{{workflow_type}} / {{task_queue}}"
+        }
+    ],
+    "fieldConfig": {
+        "defaults": {
+        "unit": "s"
+        }
+    }
+    },
+    {
+        "id": 3,
+        "type": "timeseries",
+        "title": "Average workflow duration",
+        "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+        "datasource": "Prometheus",
+        "targets": [
+            {
+            "refId": "A",
+            "expr": "sum by (workflow_type, task_queue) (workflow_duration_seconds_sum) / sum by (workflow_type, task_queue) (workflow_duration_seconds_count)",
+            "legendFormat": "{{workflow_type}} / {{task_queue}}"
+            }
+        ],
+        "fieldConfig": {
+            "defaults": {
+            "unit": "s"
+            }
+        }
+    }
+  ]
+}
