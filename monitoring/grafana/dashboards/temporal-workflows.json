@@ -6,12 +6,17 @@
   "schemaVersion": 39,
   "version": 1,
   "refresh": "5s",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
   "panels": [
     {
       "id": 1,
       "type": "stat",
       "title": "Total workflow starts",
-      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 4 },
+      "description": "Total number of workflow start requests since the application was started.",
+      "gridPos": { "x": 0, "y": 0, "w": 24, "h": 4 },
       "datasource": "Prometheus",
       "targets": [
         {
@@ -20,49 +25,112 @@
           "legendFormat": "{{workflow_type}} / {{task_queue}}"
         }
       ],
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
+          "unit": "short",
+          "decimals": 0
         }
       }
     },
     {
-    "id": 2,
-    "type": "timeseries",
-    "title": "Average workflow start gap",
-    "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
-    "datasource": "Prometheus",
-    "targets": [
+      "id": 2,
+      "type": "timeseries",
+      "title": "Average workflow start gap",
+      "description": "Average time between consecutive workflow starts. Higher values indicate workflows are being started less frequently.",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 9 },
+      "datasource": "Prometheus",
+      "targets": [
         {
-        "refId": "A",
-        "expr": "sum by (workflow_type, task_queue) (workflow_start_gap_seconds_sum) / sum by (workflow_type, task_queue) (workflow_start_gap_seconds_count)",
-        "legendFormat": "{{workflow_type}} / {{task_queue}}"
+          "refId": "A",
+          "expr": "sum by (workflow_type, task_queue) (workflow_start_gap_seconds_sum) / sum by (workflow_type, task_queue) (workflow_start_gap_seconds_count)",
+          "legendFormat": "{{workflow_type}} / {{task_queue}}"
         }
-    ],
-    "fieldConfig": {
+      ],
+      "options": {
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": ["lastNotNull", "mean", "max"]
+        }
+      },
+      "fieldConfig": {
         "defaults": {
-        "unit": "s"
+          "unit": "s",
+          "decimals": 2,
+          "noValue": "No data",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "always",
+            "pointSize": 5,
+            "spanNulls": false,
+            "axisPlacement": "auto",
+            "axisLabel": "seconds"
+          }
         }
-    }
+      }
     },
     {
-        "id": 3,
-        "type": "timeseries",
-        "title": "Average workflow duration",
-        "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
-        "datasource": "Prometheus",
-        "targets": [
-            {
-            "refId": "A",
-            "expr": "sum by (workflow_type, task_queue) (workflow_duration_seconds_sum) / sum by (workflow_type, task_queue) (workflow_duration_seconds_count)",
-            "legendFormat": "{{workflow_type}} / {{task_queue}}"
-            }
-        ],
-        "fieldConfig": {
-            "defaults": {
-            "unit": "s"
-            }
+      "id": 3,
+      "type": "timeseries",
+      "title": "Average workflow duration",
+      "description": "Average workflow execution time from start until completion.",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 9 },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (workflow_type, task_queue) (workflow_duration_seconds_sum) / sum by (workflow_type, task_queue) (workflow_duration_seconds_count)",
+          "legendFormat": "{{workflow_type}} / {{task_queue}}"
         }
+      ],
+      "options": {
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": ["lastNotNull", "mean", "max"]
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 3,
+          "noValue": "No data",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "always",
+            "pointSize": 5,
+            "spanNulls": false,
+            "axisPlacement": "auto",
+            "axisLabel": "seconds"
+          }
+        }
+      }
     }
   ]
 }
